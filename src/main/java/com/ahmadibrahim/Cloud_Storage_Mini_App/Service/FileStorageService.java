@@ -90,4 +90,27 @@ public class FileStorageService {
             throw new RuntimeException("File content detection failed" + e.getMessage());
         }
     }
+
+    //delete file
+    public void deleteFile(Long id){
+        FileMetadata fileMetadata = getFileMetadataById(id);
+        Path filePath = Paths.get(fileMetadata.getFilePath());
+
+        try{
+            Files.deleteIfExists(filePath);
+
+            fileMetadataRepository.delete(fileMetadata);
+
+        }catch (Exception e){
+            throw new RuntimeException("Could not deletefile " + id);
+        }
+    }
+
+    //delete file with params name
+    public void deleteFileWithName(String fileName){
+        FileMetadata fileMetadata = fileMetadataRepository.findByFileName(fileName)
+                .orElseThrow(()-> new RuntimeException("Could not find file with name" + fileName));
+
+        deleteFile(fileMetadata.getId());
+    }
 }

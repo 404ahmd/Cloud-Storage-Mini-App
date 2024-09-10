@@ -55,4 +55,16 @@ public class FIleStorageController {
         FileMetadata metadata = fileStorageService.getFileMetadataByName(fileName);
         return fileStorageService.downloadFile(metadata.getFilePath(), metadata.getFileName());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteFileById(@PathVariable Long id){
+        fileStorageService.deleteFile(id);
+        return ResponseEntity.ok("Delete succesfully");
+    }
+
+    @DeleteMapping("/delete/byname/{fileName}")
+    public ResponseEntity<String> deleteFileByName(@PathVariable String fileName){
+        fileStorageService.deleteFileWithName(fileName);
+        return ResponseEntity.ok("Delete succesfully");
+    }
 }
